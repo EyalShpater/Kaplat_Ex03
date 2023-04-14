@@ -1,5 +1,23 @@
 {
   "dependencies": {
     "express": "^4.18.2"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "kaplat_ex03",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shpater1234/Kaplat_Ex03.git"
+  },
+  "author": "Eyal Shpater",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shpater1234/Kaplat_Ex03/issues"
+  },
+  "homepage": "https://github.com/shpater1234/Kaplat_Ex03#readme",
+  "description": ""
 }

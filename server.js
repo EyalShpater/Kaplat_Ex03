@@ -119,7 +119,7 @@ app.put("/todo", (req, res) => {
         if (!toDo)
         {
             res.status(404).json({
-                errorMessage: "Error: no such TODO id " + id
+                errorMessage: "Error: no such TODO with id " + id
             });
         } else {
             let prevStatus = toDo.status;
@@ -132,6 +132,26 @@ app.put("/todo", (req, res) => {
     }
 
 }) 
+
+app.delete("/todo", (req, res) => {
+    let id = req.query.id;
+    let index = toDos.findIndex((obj) => obj.id == id);
+    
+    if (!id) {
+        res.status(400).send("Error!");
+    } else if (index != -1) {
+        let deletedId = toDos[index].id;
+
+        toDos.splice(index, 1);
+        res.status(200).json({
+            result: id
+        });
+    } else {
+        res.status(404).json({
+            errorMessage: "Error: no such TODO with id " + id
+        });
+    }
+})
 
 app.listen(8496, () => {
     console.log("Server listening on port 8496...\n");
