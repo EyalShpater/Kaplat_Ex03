@@ -1,5 +1,5 @@
 
-const { Console } = require("console");
+const { Console, count } = require("console");
 const express = require("express");
 const app = express();
 
@@ -30,12 +30,14 @@ app.post("/todo", (req, res) => {
         res.status(409).json(
             { errorMessage: "Error: TODO with the title " + req.body.title + " already exists in the system"
          });
+         id--;
     }
     else if (date <= currentDate)
     {
         res.status(409).json(
-            { errorMessage: "Error: Can’t create new TODO that its due date is in the past"
+            { errorMessage: "Error: Can't create new TODO that its due date is in the past"
          });
+         id--;
     }
     else{
         toDos.push(toDo);
@@ -43,10 +45,59 @@ app.post("/todo", (req, res) => {
             result: (id)
         })
     }
+});
 
+app.get("/todo/size", (req, res) => {
+    let status = req.query.status;
 
+    switch (status) {
+        case "ALL":
+            res.status(200).json({
+                result: toDos.length
+            });
+            break;
+        case "PENDING":
+            responseByFilter("PENDING", res);
+            break;
+        case "LATE":
+            responseByFilter("LATE", res);
+            break;
+        case "DONE":
+            responseByFilter("DONE", res);
+            break;
+    
+        default:
+            res.status(400);
+            break;
+    }
 });
 
 app.listen(8496, () => {
     console.log("Server listening on port 8496...\n");
 });
+
+
+/********* functions  *********/
+
+function countToDoByFilter(filter)
+{
+    let count = 0;
+
+    for(let i = 0; i < toDos.length; i++)
+    {
+        if (toDos[i].Status === filter)
+        {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+function responseByFilter(filter, res)
+{
+    let count = countToDoByFilter(filter);
+    res.status(200).json({
+        result: count
+    });
+}
